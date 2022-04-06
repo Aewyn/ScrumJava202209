@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JarUitleg:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JarUitleg_jar</output-path>
+    <root id="archive" name="JarUitleg.jar">
+      <element id="module-output" name="JarUitleg" />
+    </root>
+  </artifact>
+</component>

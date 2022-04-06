@@ -2,12 +2,13 @@ package be.aewyn.gastenboek;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public final class Gastenboek implements Serializable {
-    static final ArrayList<GastenboekEntry> entries = new ArrayList<>();
+    private final List<GastenboekEntry> entries = new ArrayList<>();
 
-    public static void addEntry(String author, String message){
-        entries.add(new GastenboekEntry(author,message));
+    public void addEntry(GastenboekEntry ge){
+        entries.add(ge);
     }
 
     @Override

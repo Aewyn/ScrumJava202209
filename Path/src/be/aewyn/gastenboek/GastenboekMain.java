@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class GastenboekMain {
     public static void main(String[] args) {
         var scanner = new Scanner(System.in);
+        var newGastenboek = new Gastenboek();
+        var gelezenGastenboek = new Gastenboek();
 
         System.out.print("Wat zou je willen doen (T om te tonen, S om te schrijven, E om te stoppen: ");
         var input = scanner.next();
@@ -12,7 +14,8 @@ public class GastenboekMain {
             try{
                 if (input.equals("T")){
                     //Code voor tonen van de lijst in omgekeerde volgorde
-                    GastenboekManager.readEntriesFromFile();
+                    gelezenGastenboek = GastenboekManager.readEntriesFromFile();
+                    System.out.println(gelezenGastenboek);
                     System.out.print("\nWat zou je willen doen (T om te tonen, S om te schrijven, E om te stoppen: ");
                     input = scanner.next();
                 }
@@ -24,9 +27,9 @@ public class GastenboekMain {
                     System.out.print("Geef de boodschap: ");
                     var tempMessage = scanner.nextLine();
 
-                    Gastenboek.addEntry(tempAuthor, tempMessage);
+                    newGastenboek.addEntry(new GastenboekEntry(tempAuthor, tempMessage));
 
-                    GastenboekManager.writeToFile();
+                    GastenboekManager.writeToFile(newGastenboek);
 
                     System.out.print("\nWat zou je willen doen (T om te tonen, S om te schrijven, E om te stoppen: ");
                     input = scanner.next();

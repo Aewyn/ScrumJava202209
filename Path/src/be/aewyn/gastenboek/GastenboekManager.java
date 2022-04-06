@@ -5,39 +5,40 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 
 public abstract class GastenboekManager {
-    public static void writeToFile(){
-        if(Files.exists(Path.of("/data/guestbook/entries.txt"))){
-            try(var stream = new ObjectOutputStream(Files.newOutputStream(Path.of("/data/guestbook/entries.txt")))){
-                stream.writeObject(Gastenboek.entries);
+    private final static Path PATH = Path.of("/data/guestbook/");
+    private final static Path FILE = Path.of("/data/guestbook/entries.txt");
+    public static void writeToFile(Gastenboek gastenBoek){
+        if(Files.exists(FILE)){
+            try(var stream = new ObjectOutputStream(Files.newOutputStream(FILE))){
+                stream.writeObject(gastenBoek);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
         } else {
             try{
-                Files.createFile(Path.of("/data/guestbook/entries.txt"));
+                Files.createDirectory(PATH);
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
-            try(var stream = new ObjectOutputStream(Files.newOutputStream(Path.of("/data/guestbook/entries.txt")))){
-                for (var entry:Gastenboek.entries) {
-                    stream.writeObject(entry);
-                }
+            try{
+                Files.createFile(FILE);
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+            try(var stream = new ObjectOutputStream(Files.newOutputStream(FILE))){
+                stream.writeObject(gastenBoek);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
-    public static void readEntriesFromFile(){
-        if(Files.exists(Path.of("/data/guestbook/entries.txt"))){
+    public static Gastenboek readEntriesFromFile(){
+        if(Files.exists(FILE)){
             System.out.println("Reading path found!");
-            try(var stream = new ObjectInputStream(Files.newInputStream(Path.of("/data/guestbook/entries.txt")))){
-                ArrayList<GastenboekEntry> entries = (ArrayList<GastenboekEntry>) stream.readObject();
-                for (var i = entries.size(); i > 0; i-- ) {
-                    System.out.println(entries.get(i-1));
-                }
+            try(var stream = new ObjectInputStream(Files.newInputStream(FILE))){
+                return (Gastenboek) stream.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println(e.getMessage());
             }
@@ -45,5 +46,6 @@ public abstract class GastenboekManager {
         else{
             System.out.println("Reading path not found...");
         }
+        return new Gastenboek();
     }
 }
